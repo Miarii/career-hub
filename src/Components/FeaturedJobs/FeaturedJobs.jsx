@@ -3,59 +3,64 @@ import Job from "../Job/Job";
 
 const FeaturedJobs = () => {
   const [jobs, setJobs] = useState([]);
-  const [dataLength, setDataLength] = useState(4);
-
+  const [displayCount, setDisplayCount] = useState(4);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("jobs.json")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch jobs");
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch("jobs.json");
+        if (!response.ok) {
+          throw new Error("Failed to fetch job listings");
         }
-        return res.json();
-      })
-      .then((data) => setJobs(data))
-      .catch((err) => setError(err.message));
+        const data = await response.json();
+        setJobs(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchJobs();
   }, []);
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-center text-red-600 py-8">Error: {error}</div>;
   }
 
+  const handleDisplayToggle = () => {
+    setDisplayCount(displayCount === jobs.length ? 4 : jobs.length);
+  };
+
   return (
-    <div>
-      <div className="text-center">
-        <h2 className="text-5xl">Featured Jobs: {jobs.length}</h2>
-        <p>
-          Explore thousands of job opportunities with all the information you
-          need. It is your future. Come find it. Manage all your job application
-          from start to finish.
+    <section className="container mx-auto px-4 py-20">
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-bold mb-4">Featured Opportunities</h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Discover exceptional career opportunities tailored to your expertise. 
+          Browse through our curated selection of positions from industry-leading companies 
+          and take the next step in your professional journey.
         </p>
       </div>
-      <div className="grid grid-cols-2 gap-4 ">
-        {jobs.slice(0, dataLength).map((job) => (
-          <Job job={job} key={job.id}></Job>
+      <div className="grid md:grid-cols-2 gap-6">
+        {jobs.slice(0, displayCount).map((job) => (
+          <Job job={job} key={job.id} />
         ))}
       </div>
-      <div className="text-center mt-8">
-        {dataLength < jobs.length ? (
+      {jobs.length > 4 && (
+        <div className="text-center mt-12">
           <button
-            className="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-300 shadow-lg transform hover:scale-105"
-            onClick={() => setDataLength(jobs.length)}
+            className={`px-8 py-3 font-semibold rounded-lg transition-all duration-300 
+              ${displayCount < jobs.length 
+                ? 'bg-blue-600 hover:bg-blue-700' 
+                : 'bg-purple-600 hover:bg-purple-700'
+              } text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1`}
+            onClick={handleDisplayToggle}
           >
-            Show More Jobs
+            {displayCount < jobs.length ? 'View More Positions' : 'Show Less'}
           </button>
-        ) : (
-          <button
-            className="px-6 py-3 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors duration-300 shadow-lg transform hover:scale-105"
-            onClick={() => setDataLength(4)}
-          >
-            Show Less Jobs
-          </button>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </section>
   );
 };
 

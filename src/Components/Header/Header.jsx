@@ -3,16 +3,14 @@ import { NavLink } from "react-router-dom";
 const Header = () => {
   const links = (
     <>
-      <li><NavLink to="/">Home</NavLink></li>
-      <li><NavLink to="/jobs">Jobs</NavLink></li>
-      <li><NavLink to="/applied">Applied Job</NavLink></li>
-      <li><NavLink to="/statistics">Statistics</NavLink></li>
-      <li><NavLink to="/blogs">Blogs</NavLink></li>
+      <li><NavLink to="/" className={({ isActive }) => isActive ? "text-blue-500" : "hover:text-blue-500"}>Home</NavLink></li>
+      <li><NavLink to="/applied" className={({ isActive }) => isActive ? "text-blue-500" : "hover:text-blue-500"}>Applied Job</NavLink></li>
+      <li><NavLink to="/blogs" className={({ isActive }) => isActive ? "text-blue-500" : "hover:text-blue-500"}>Blogs</NavLink></li>
     </>
   );
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 my-10">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -38,7 +36,7 @@ const Header = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Career hub</a>
+        <a className="btn btn-ghost text-3xl hover:text-blue-500">Career hub</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
@@ -46,7 +44,7 @@ const Header = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">APPLY NOW</a>
+        <a className="btn text-blue-500 hover:text-blue-600">APPLY NOW</a>
       </div>
     </div>
   );
