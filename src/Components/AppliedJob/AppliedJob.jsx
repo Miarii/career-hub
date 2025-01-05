@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { getStoredJobApplication } from "../../utilities/localstorage";
 
 const AppliedJob = () => {
   const jobs = useLoaderData();
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [displayJobs, setDisplayJobs] = useState([]);
+  const navigate = useNavigate();
+
+  const handleViewDetails = (id) => {
+    navigate(`/job/${id}`);
+  };
 
   const handleJobFilter = (filter) => {
     switch (filter) {
@@ -108,14 +113,14 @@ const AppliedJob = () => {
                       </div>
                     </div>
                   </div>
-                  <button className="btn btn-primary">View Details</button>
+                  <button onClick={() => handleViewDetails(job.id)} className="btn btn-primary">View Details</button>
                 </div>
               </div>
             </div>
           </li>
         ))}
       </ul>
-    </div>
+   </div>
   );
 };
 

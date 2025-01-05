@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Job from "../Job/Job";
 
-const FeaturedJobs = () => {
+const FeaturedJobs = ({ onDisplayToggle }) => {
   const [jobs, setJobs] = useState([]);
   const [displayCount, setDisplayCount] = useState(4);
   const [error, setError] = useState(null);
@@ -28,7 +28,9 @@ const FeaturedJobs = () => {
   }
 
   const handleDisplayToggle = () => {
-    setDisplayCount(displayCount === jobs.length ? 4 : jobs.length);
+    const newDisplayCount = displayCount === jobs.length ? 4 : jobs.length;
+    setDisplayCount(newDisplayCount);
+    onDisplayToggle(newDisplayCount, jobs.length);
   };
 
   return (
